@@ -16,6 +16,22 @@ class CommentaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaire::class);
     }
 
+    public function findByMostLiked()
+{
+    return $this->createQueryBuilder('c')
+        ->orderBy('c.likes', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+
+public function findByMostRelevant()
+{
+    return $this->createQueryBuilder('c')
+        ->orderBy('c.relevanceScore', 'DESC') // Suppose que tu as un champ "relevanceScore"
+        ->getQuery()
+        ->getResult();
+}
+
 //    /**
 //     * @return Commentaire[] Returns an array of Commentaire objects
 //     */

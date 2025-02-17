@@ -110,4 +110,32 @@ class Post
 
         return $this;
     }
+      // Getter pour récupérer les commentaires
+      public function getCommentaires(): Collection
+      {
+          return $this->commentaires;
+      }
+  
+      // Ajouter un commentaire à la liste
+      public function addCommentaire(Commentaire $commentaire): self
+      {
+          if (!$this->commentaires->contains($commentaire)) {
+              $this->commentaires[] = $commentaire;
+              $commentaire->setPost($this);
+          }
+  
+          return $this;
+      }
+  
+      // Supprimer un commentaire
+      public function removeCommentaire(Commentaire $commentaire): self
+      {
+          if ($this->commentaires->removeElement($commentaire)) {
+              if ($commentaire->getPost() === $this) {
+                  $commentaire->setPost(null);
+              }
+          }
+  
+          return $this;
+      }
 }

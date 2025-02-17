@@ -15,6 +15,24 @@ class PostRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Post::class);
     }
+    public function findByMostCommented()
+{
+    return $this->createQueryBuilder('p')
+        ->leftJoin('p.commentaires', 'c')
+        ->groupBy('p.id')
+        ->orderBy('COUNT(c.id)', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+
+public function findByMostLiked()
+{
+    return $this->createQueryBuilder('p')
+        ->orderBy('p.likes', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+
 
     //    /**
     //     * @return Post[] Returns an array of Post objects

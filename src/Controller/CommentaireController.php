@@ -78,4 +78,28 @@ final class CommentaireController extends AbstractController
 
         return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/filter/{filter}', name: 'app_comment_filter', methods: ['GET'])]
+public function filterComments(string $filter, CommentaireRepository $commentaireRepository): Response
+{
+    switch ($filter) {
+        case 'recent':
+            $commentaires = $commentaireRepository->findBy([], ['createdAt' => 'DESC']);
+            break;
+        case 'liked':
+            $commentaires = $commentaireRepository->findByMostLiked();
+            break;
+        case 'relevant':
+            $commentaires = $commentaireRepository->findByMostRelevant();
+            break;
+        default:
+            $commentaires = $commentaireRepository->findAll();
+            break;
+    }
+
+    return $this->render('commentaire/index.html.twig', [
+        'commentaires' => $commentaires,
+    ]);
+}
+
 }
