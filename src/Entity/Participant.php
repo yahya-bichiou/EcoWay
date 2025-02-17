@@ -1,8 +1,13 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Persistence\ManagerRegistry;
+
 
 use App\Repository\ParticipantRepository;
+use App\Repository\EvenementRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
@@ -24,9 +29,6 @@ class Participant
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
-
-    #[ORM\ManyToOne(inversedBy: 'participants')]
-    private ?Evenement $evenement = null;
 
     public function getId(): ?int
     {
@@ -77,18 +79,6 @@ class Participant
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getEvenement(): ?Evenement
-    {
-        return $this->evenement;
-    }
-
-    public function setEvenement(?Evenement $evenement): static
-    {
-        $this->evenement = $evenement;
 
         return $this;
     }

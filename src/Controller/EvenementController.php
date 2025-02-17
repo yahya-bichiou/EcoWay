@@ -11,27 +11,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 //les index
-#[Route('/evenement')]
+//#[Route('/evenement')]
 final class EvenementController extends AbstractController{
-    #[Route(name: 'app_evenement_index', methods: ['GET'])]
+    #[Route('/event',name: 'app_evenement_index', methods: ['GET'])]
     public function index(EvenementRepository $evenementRepository): Response
     {
         return $this->render('evenement/index.html.twig', [
             'evenements' => $evenementRepository->findAll(),
         ]);
     }
-    #[Route('/back',name: 'app_backevenement_index', methods: ['GET'])]
+    #[Route('/back/event',name: 'app_backevenement_index', methods: ['GET'])]
     public function indexback(EvenementRepository $evenementRepository,Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $evenement = new Evenement();
         $form = $this->createForm(EvenementType::class, $evenement);
         $form->handleRequest($request);
-        return $this->render('evenement/listback.html.twig', [
+        return $this->render('backend/event.html.twig', [
             'evenements' => $evenementRepository->findAll(),
         ]);
 
-        return $this->render('evenement/listback.html.twig', [
+        return $this->render('backend/event.html.twig', [
             'evenement' => $evenement,
             'form' => $form,
         ]);
@@ -76,7 +76,7 @@ final class EvenementController extends AbstractController{
                 $entityManager->persist($evenement);
                 $entityManager->flush();
     
-                return $this->redirectToRoute('evenement/listback.html.twig', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('templates/backend/event.html.twig', [], Response::HTTP_SEE_OTHER);
             }
     
             return $this->render('evenement/addback.html.twig', [

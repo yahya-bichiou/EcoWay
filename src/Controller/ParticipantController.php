@@ -10,20 +10,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Entity\Evenement;
+
+use Doctrine\Persistence\ManagerRegistry;
+
+//use App\Entity\Evenement;
 
 #[Route('/participant')]
 final class ParticipantController extends AbstractController{
-    #[Route(name: 'app_participant_index', methods: ['GET'])]
+    #[Route( '/back' , name: 'app_participant_indexback', methods: ['GET'])]
     public function index(ParticipantRepository $participantRepository): Response
     {
-        return $this->render('participant/index.html.twig', [
+        return $this->render('participant/listp.html.twig', [
             'participants' => $participantRepository->findAll(),
         ]);
     }
-
-    #[Route('/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    /*public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $participant = new Participant();
     
@@ -38,7 +39,6 @@ final class ParticipantController extends AbstractController{
                 throw $this->createNotFoundException("L'événement avec l'ID $id n'existe pas.");
             }
         }
-    
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
     
@@ -53,7 +53,43 @@ final class ParticipantController extends AbstractController{
             'participant' => $participant,
             'form' => $form,
         ]);
+    }*/
+
+////////////////////////////////////
+#[Route('/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
+public function add(ManagerRegistry $doctrine, Request $request): Response
+{
+    $em = $doctrine->getManager();
+    $participant = new Participant();
+    $form = $this->createForm(ParticipantType::class, $participant);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em->persist($participant);
+        $em->flush();
+
+        $this->addFlash('success', 'participant ajouté avec succès.');
+
+        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    // Récupération des plannings
+    $plannings = $doctrine->getRepository(Participant::class)->findAll();
+
+    return $this->render('participant/new.html.twig', [
+        'form' => $form,
+        'plannings' => $plannings, // Assurez-vous de transmettre 'plannings'
+    ]);
+}
+
+/////////////////////////////////////////////
+
+
+
+
+
+    
+        
     
 
     #[Route('/{id}', name: 'app_participant_show', methods: ['GET'])]

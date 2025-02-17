@@ -925,27 +925,60 @@
             </div>
           </div>
         </aside>
+
 <div class="page-wrapper">
-<form id="contact" action="" method="post" novalidate>
- <div class="row">
-              <div class="col-lg-6 offset-lg-3">
-                <div class="section-heading">
-                  <h1> evenement </h1>
+
+                <div class="content-wrapper">
+                    <div class="content">
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h1>participant Index</h1>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>nom</th>
+                                                <th>age</th>
+                                                <th>telephone</th>
+                                                <th>email</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for participant in participants %}
+                                            <tr>
+                                                <td>{{ participant.id }}</td>
+                                                <td>{{ participant.nom }}</td>
+                                                <td>{{ participant.age }}</td>
+                                                <td>{{ participant.telephone }}</td>
+                                                <td>{{ participant.email }}</td>
+                                                <td>
+                                                    <a href="{{ path('app_participant_show', {'id': participant.id}) }}" class="btn btn-info btn-sm">show</a>
+                                                    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}" class="btn btn-warning btn-sm">edit</a>
+                                                    {{ include('participant/_delete_form.html.twig') }}
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="4">no records found</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
-              </div>
-              <div class="col-lg-4 offset-lg-4">
-                    {{ include('evenement/_form.html.twig') }}
-                    <form action="{{ path('app_backevenement_index') }}">
-                    <button class="btn">Retour</button>
+
+<form action="{{ path('app_backevenement_index') }}">
+                    <button class="btn">retourner</button>
                     </form>
-              </div>
- </form>
- </div>
 
-    
   </body>
-
-
-  
-
 {% endblock %}

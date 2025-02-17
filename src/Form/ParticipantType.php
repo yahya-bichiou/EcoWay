@@ -18,13 +18,10 @@ class ParticipantType extends AbstractType
             ->add('age')
             ->add('telephone')
             ->add('email')
-            ->add('evenement', EntityType::class, [
-                'class' => Evenement::class,
-'choice_label' => 'id',
-            ])
-        ;
+            ;
+        
     }
-
+    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
