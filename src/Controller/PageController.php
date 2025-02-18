@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Produit;
 use App\Form\Produit1Type;
+use App\Entity\Categorie;
+use App\Form\CategorieType;
 use App\Repository\ProduitRepository;
 use App\Repository\CategorieRepository; 
 use Symfony\Component\Routing\Attribute\Route;
@@ -111,7 +113,7 @@ final class PageController extends AbstractController
 
     //Change controller
     
-    #[Route('/back/products', name: 'back_products')]
+    #[Route('/back/products', name: 'back_products', methods:['GET'])]
     public function indexp1(
         ProduitRepository $produitRepository,
         CategorieRepository $categorieRepository,
@@ -203,7 +205,7 @@ final class PageController extends AbstractController
     }
 
     //Change controller
-    #[Route('/front/products', name: 'back_products')]
+    #[Route('/front/products', name: 'front_products')]
     public function indexpf(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
     {
 
