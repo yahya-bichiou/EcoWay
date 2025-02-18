@@ -1,9 +1,6 @@
-{% extends 'base.html.twig' %}
-
 {% block title %}{% endblock %}
 
 {% block body %}
-    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -31,7 +28,4 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
-
-    <a href="{{ path('app_collecte_new') }}">Create new</a>
 {% endblock %}

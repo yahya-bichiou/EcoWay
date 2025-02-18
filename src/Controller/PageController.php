@@ -5,19 +5,19 @@ use App\Entity\Livraison;
 use App\Form\LivraisonType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Produit;
+use App\Form\Produit1Type;
+use App\Repository\ProduitRepository;
+use App\Repository\CategorieRepository; 
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\LivraisonRepository;
 use App\Repository\CollecteRepository;
 use App\Repository\DepotRepository;
 use App\Repository\CommandeRepository;
-use App\Entity\Collecte;
-use App\Entity\Depot;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Commande;
 use App\Form\CommandeType;
-use App\Form\CollecteType;
-use App\Form\DepotType;
 
 
 final class PageController extends AbstractController
@@ -34,13 +34,13 @@ final class PageController extends AbstractController
         $commandeForm = $this->createForm(CommandeType::class, $commande);
         $commandeForm->handleRequest($request);
 
-        if ($commandeForm->isSubmitted()) {
-            if ($commandeForm->isValid()) {
-                $entityManager->persist($commande);
-                $entityManager->flush();
-                return $this->redirectToRoute('back_order');
-            }
+        if ($commandeForm->isSubmitted() && $commandeForm->isValid()) {
+            $entityManager->persist($commande);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('back_order', [], Response::HTTP_SEE_OTHER);
         }
+
         // Handling Livraison Form
         $livraison = new Livraison();
         $livraisonForm = $this->createForm(LivraisonType::class, $livraison);
@@ -78,82 +78,17 @@ final class PageController extends AbstractController
             'livraisonForm' => $livraisonForm->createView(),
         ]);
     }
-    #[Route('l/{id}', name: 'livraison_delete', methods: ['POST'])]
-    public function delete(Request $request, Livraison $livraison, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$livraison->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($livraison);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('back_order', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('c/{id}', name: 'commande_delete', methods: ['POST'])]
-    public function deletec(Request $request, Commande $commande, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$commande->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($commande);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('back_order', [], Response::HTTP_SEE_OTHER);
-    }
 
 
     //Change controller
     #[Route('/back/dropoff', name: 'back_dropoff')]
-    public function indexd(CollecteRepository $collecteRepository, DepotRepository $depotRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function indexd(CollecteRepository $collecteRepository, DepotRepository $depotRepository): Response
     {
-        $depot = new Depot();
-        $depotForm = $this->createForm(DepotType::class, $depot);
-        $depotForm->handleRequest($request);
-
-        if ($depotForm->isSubmitted()) {
-            if ($depotForm->isValid()) {
-                $entityManager->persist($depot);
-                $entityManager->flush();
-                return $this->redirectToRoute('back_dropoff');
-            }
-        }
-        // Handling Collecte Form
-        $collecte = new collecte();
-        $collecteForm = $this->createForm(CollecteType::class, $collecte);
-        $collecteForm->handleRequest($request);
-        if ($collecteForm->isSubmitted()) {
-            if ($collecteForm->isValid()) {
-                $entityManager->persist($collecte);
-                $entityManager->flush();
-                return $this->redirectToRoute('back_dropoff');
-            }
-        }
         return $this->render('backend/dropoff.html.twig', [
             'controller_name' => 'PageController',
             'depots' => $depotRepository->findAll(),
             'collectes' => $collecteRepository->findAll(),
-            'depotForm' => $depotForm->createView(),
-            'collecteForm' => $collecteForm->createView(),
         ]);
-    }
-    #[Route('/rmd/{id}', name: 'depot_delete', methods: ['POST'])]
-    public function deleted(Request $request, Depot $depot, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$depot->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($depot);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('back_dropoff', [], Response::HTTP_SEE_OTHER);
-    }
-    #[Route('/rmc/{id}', name: 'collecte_delete', methods: ['POST'])]
-    public function deletep(Request $request, Collecte $collecte, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$collecte->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($collecte);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('back_dropoff', [], Response::HTTP_SEE_OTHER);
     }
 
     //Change controller
@@ -175,13 +110,46 @@ final class PageController extends AbstractController
     }
 
     //Change controller
+    
     #[Route('/back/products', name: 'back_products')]
-    public function indexp(): Response
-    {
+    public function indexp1(
+        ProduitRepository $produitRepository,
+        CategorieRepository $categorieRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        // Gestion du formulaire Produit
+        $produit = new Produit();
+        $produitForm = $this->createForm(Produit1Type::class, $produit);
+        $produitForm->handleRequest($request);
+    
+        if ($produitForm->isSubmitted() && $produitForm->isValid()) {
+            $entityManager->persist($produit);
+            $entityManager->flush();
+            return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        // Gestion du formulaire Catégorie
+        $categorie = new Categorie();
+        $categorieForm = $this->createForm(CategorieType::class, $categorie);
+        $categorieForm->handleRequest($request);
+    
+        if ($categorieForm->isSubmitted() && $categorieForm->isValid()) {
+            $entityManager->persist($categorie);
+            $entityManager->flush();
+            return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
+        }
+    
         return $this->render('backend/products.html.twig', [
             'controller_name' => 'PageController',
+            'produits' => $produitRepository->findAll(),
+            'categories' => $categorieRepository->findAll(),
+            'produitForm' => $produitForm->createView(),
+            'categorieForm' => $categorieForm->createView(),
         ]);
     }
+    
+    
 
     //Change controller
     #[Route('/back/user', name: 'back_user')]
@@ -198,15 +166,11 @@ final class PageController extends AbstractController
     #[Route('/front/order', name: 'front_order')]
     public function indexof(CommandeRepository $commandeRepository, LivraisonRepository $livraisonRepository): Response
     {
-        // Fetch commandes with userId = 0 and status = 'non_confirmée'
-        $commandes = $commandeRepository->findBy([
-            'clientId' => 1
-        ]);
-
         return $this->render('frontend/order.html.twig', [
-            'commandes' => $commandes,
+            'controller_name' => 'PageController',
+            'commandes' => $commandeRepository->findAll(),
+            'livraisons' => $livraisonRepository->findAll(),
         ]);
-
     }
 
     //Change controller
@@ -240,10 +204,13 @@ final class PageController extends AbstractController
 
     //Change controller
     #[Route('/front/products', name: 'back_products')]
-    public function indexpf(): Response
+    public function indexpf(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
     {
-        return $this->render('backend/products.html.twig', [
+
+        return $this->render('frontend/products.html.twig', [
             'controller_name' => 'PageController',
+            'produits' => $produitRepository->findAll(),
+            'categories' => $categorieRepository->findAll(),
         ]);
     }
 

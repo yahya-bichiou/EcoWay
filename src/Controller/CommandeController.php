@@ -61,9 +61,15 @@ final class CommandeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $commande = $form->getData();
+
+            // Convert comma-separated product IDs into an array
+            $produitsString = $form->get('produits')->getData();
+            $produitsArray = array_map('trim', explode(',', $produitsString));
+
+            $commande->setProduits($produitsArray);
             $entityManager->flush();
 
-            return $this->redirectToRoute('back_order', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('commande/edit.html.twig', [
@@ -80,6 +86,6 @@ final class CommandeController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('front_order', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,26 +1,26 @@
-
-{{ form_start(form,{'attr':{'novalidate':'novalidate'}} )}}
-<table>
+{{ form_start(form, {'attr': {'class': 'form', 'novalidate': 'novalidate'}}) }}
+<h2>Ajouter une Collecte</h2>
+<table class="table table-bordered">
     <tr>
-        <td> {{form_label(form.quantite,"Quantite")}} </td> 
-        <td> {{ form_widget(form.quantite) }} </td>
-        <td> {{ form_errors(form.quantite) }} </td> 
-    </tr> 
+        <td class="form-label">{{ form_label(form.quantite, "Quantité") }}</td>
+        <td>{{ form_widget(form.quantite, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.quantite) }}</td>
+    </tr>
     <tr>
-        <td> {{form_label(form.date,"Date")}} </td> 
-        <td> {{ form_widget(form.date) }} </td>
-        <td> {{ form_errors(form.date) }} </td> 
-    </tr> 
+        <td class="form-label">{{ form_label(form.date, "Date") }}</td>
+        <td>{{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.date) }}</td>
+    </tr>
     <tr>
-    <td> {{form_label(form.responsable,"Responsable")}} </td> 
-    <td> {{ form_widget(form.responsable) }} </td>
-    <td> {{ form_errors(form.responsable) }} </td> 
-    </tr> 
-    <tr>
-    <td> {{form_label(form.depot,"Depot")}} </td> 
-    <td> {{ form_widget(form.depot) }} </td>
-    <td> {{ form_errors(form.depot) }} </td> 
-    </tr> 
+        <td class="form-label">{{ form_label(form.responsable, "Responsable") }}</td>
+        <td>{{ form_widget(form.responsable, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.responsable) }}</td>
+    </tr>
+    <!-- Depot field is hidden -->
+    {{ form_widget(form.depot, {'attr': {'style': 'display: none;'}}) }}
 </table>
-{{ form_widget(form.save) }}
+
+<div class="text-center mt-4">
+    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+</div>
 {{ form_end(form) }}

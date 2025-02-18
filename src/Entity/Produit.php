@@ -60,11 +60,19 @@ class Produit
     #[Assert\Type(\DateTimeInterface::class, message: "La date doit être valide.")]
     private ?\DateTimeInterface $date_ajout = null;
 
-    #[ORM\ManyToOne(inversedBy: 'produit')]
-    private ?StockProduit $stockProduit = null;
+    #[ORM\ManyToOne(targetEntity: Categorie::class)]
+    #[ORM\JoinColumn(name: "catégorie_id", referencedColumnName: "id")]
+    private ?Categorie $catégorie = null;
 
-    #[ORM\ManyToOne(inversedBy: 'produits')]
-    private ?StockProduit $stock = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\File(
+        maxSize: "2M",
+        mimeTypes: ["image/jpeg", "image/png"],
+        mimeTypesMessage: "Veuillez uploader une image JPG ou PNG valide."
+    )]
+    private ?string $image = null;
+   
+    
 
     // Getters et Setters
     public function getId(): ?int
@@ -148,28 +156,27 @@ class Produit
         $this->date_ajout = $date_ajout;
         return $this;
     }
-
-    public function getStockProduit(): ?StockProduit
+  
+    public function getCatégorie(): ?Categorie
     {
-        return $this->stockProduit;
+        return $this->catégorie;  // Correction ici
     }
-
-    public function setStockProduit(?StockProduit $stockProduit): static
+    
+    public function setCatégorie(?Categorie $catégorie): static
     {
-        $this->stockProduit = $stockProduit;
-
+        $this->catégorie = $catégorie;  // Correction ici
+    
+        return $this;
+    }
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+    
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
         return $this;
     }
 
-    public function getStock(): ?StockProduit
-    {
-        return $this->stock;
-    }
-
-    public function setStock(?StockProduit $stock): static
-    {
-        $this->stock = $stock;
-
-        return $this;
-    }
 }

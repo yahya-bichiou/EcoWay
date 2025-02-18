@@ -88,7 +88,7 @@ public function show(Depot $depot, Request $request, EntityManagerInterface $ent
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('back_dropoff', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_depot_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('depot/edit.html.twig', [
@@ -105,6 +105,6 @@ public function show(Depot $depot, Request $request, EntityManagerInterface $ent
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('back_dropoff', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_depot_index', [], Response::HTTP_SEE_OTHER);
     }
 }
