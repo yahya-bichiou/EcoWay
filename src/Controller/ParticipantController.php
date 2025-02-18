@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Participant;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
@@ -63,7 +62,7 @@ final class ParticipantController extends AbstractController{
     }*/
 
 ////////////////////////////////////
-#[Route('/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
+#[Route('/participant/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
 public function add(ManagerRegistry $doctrine, Request $request): Response
 {
     $em = $doctrine->getManager();
@@ -78,7 +77,7 @@ public function add(ManagerRegistry $doctrine, Request $request): Response
         $this->addFlash('success', 'participant ajouté avec succès.');
 
         ////////////////////////////////////////////////////////////////////////////////////
-        return $this->redirectToRoute('app_backevenement_index', [], Response::HTTP_SEE_OTHER);
+       // return $this->redirectToRoute('app_participant_new', [], Response::HTTP_SEE_OTHER);
     }
 
     // Récupération des plannings
@@ -86,19 +85,11 @@ public function add(ManagerRegistry $doctrine, Request $request): Response
 
     return $this->render('participant/new.html.twig', [
         'form' => $form,
-        'participants' => $participants, // Assurez-vous de transmettre 'plannings'
+        'participant' => $participant, // Assurez-vous de transmettre 'plannings'
     ]);
 }
 
-/////////////////////////////////////////////
-
-
-
-
-
-    
-        
-    
+/////////////////////////////////////////////  
 
     #[Route('/{id}', name: 'app_participant_show', methods: ['GET'])]
     public function show(Participant $participant): Response
