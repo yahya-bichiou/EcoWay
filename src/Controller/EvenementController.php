@@ -76,7 +76,7 @@ final class EvenementController extends AbstractController{
                 $entityManager->persist($evenement);
                 $entityManager->flush();
     
-                return $this->redirectToRoute('templates/backend/event.html.twig', [], Response::HTTP_SEE_OTHER);
+                //return $this->redirectToRoute('backend/event.html.twig', [], Response::HTTP_SEE_OTHER);
             }
     
             return $this->render('evenement/addback.html.twig', [
@@ -94,7 +94,16 @@ final class EvenementController extends AbstractController{
             'evenement' => $evenement,
         ]);
         
-    }           
+    }
+    
+    #[Route('/show/{id}', name: 'app_evenement_sb', methods: ['GET'])]
+    public function showback(Evenement $evenement): Response
+    {
+        return $this->render('evenement/showback.html.twig', [
+            'evenement' => $evenement,
+        ]);
+        
+    }
     #[Route('/{id}/edit', name: 'app_evenement_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Evenement $evenement, EntityManagerInterface $entityManager): Response
     {
@@ -123,4 +132,6 @@ final class EvenementController extends AbstractController{
 
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    
 }

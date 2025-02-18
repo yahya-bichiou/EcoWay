@@ -7,7 +7,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 
 use App\Repository\ParticipantRepository;
-use App\Repository\EvenementRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]

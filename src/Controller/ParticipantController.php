@@ -13,17 +13,24 @@ use Symfony\Component\Routing\Attribute\Route;
 
 use Doctrine\Persistence\ManagerRegistry;
 
-//use App\Entity\Evenement;
 
 #[Route('/participant')]
 final class ParticipantController extends AbstractController{
     #[Route( '/back' , name: 'app_participant_indexback', methods: ['GET'])]
+    public function indexback(ParticipantRepository $participantRepository): Response
+    {
+        return $this->render('participant/listp.html.twig', [
+            'participants' => $participantRepository->findAll(),
+        ]);
+    }
+    #[Route(  name: 'app_participant_index', methods: ['GET'])]
     public function index(ParticipantRepository $participantRepository): Response
     {
         return $this->render('participant/listp.html.twig', [
             'participants' => $participantRepository->findAll(),
         ]);
     }
+
     /*public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $participant = new Participant();
@@ -70,15 +77,16 @@ public function add(ManagerRegistry $doctrine, Request $request): Response
 
         $this->addFlash('success', 'participant ajouté avec succès.');
 
-        return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+        ////////////////////////////////////////////////////////////////////////////////////
+        return $this->redirectToRoute('app_backevenement_index', [], Response::HTTP_SEE_OTHER);
     }
 
     // Récupération des plannings
-    $plannings = $doctrine->getRepository(Participant::class)->findAll();
+    $participant = $doctrine->getRepository(Participant::class)->findAll();
 
     return $this->render('participant/new.html.twig', [
         'form' => $form,
-        'plannings' => $plannings, // Assurez-vous de transmettre 'plannings'
+        'participants' => $participants, // Assurez-vous de transmettre 'plannings'
     ]);
 }
 
@@ -109,7 +117,7 @@ public function add(ManagerRegistry $doctrine, Request $request): Response
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backevenement_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('participant/edit.html.twig', [
@@ -126,6 +134,6 @@ public function add(ManagerRegistry $doctrine, Request $request): Response
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_participant_indexback', [], Response::HTTP_SEE_OTHER);
     }
 }
