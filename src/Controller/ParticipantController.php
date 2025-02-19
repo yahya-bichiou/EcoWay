@@ -9,12 +9,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
 use Doctrine\Persistence\ManagerRegistry;
+////////////////////////////////////////////////////////
+
+//use App\Entity\Evenement;
+use App\Repository\EvenementRepository;
+//use Symfony\Component\Routing\Annotation\Route;
 
 
 #[Route('/participant')]
 final class ParticipantController extends AbstractController{
+//////////////////////////////////index////////////////////////////////////////////////////////////////////
     #[Route( '/back' , name: 'app_participant_indexback', methods: ['GET'])]
     public function indexback(ParticipantRepository $participantRepository): Response
     {
@@ -29,7 +34,7 @@ final class ParticipantController extends AbstractController{
             'participants' => $participantRepository->findAll(),
         ]);
     }
-
+/////////////////////////////////////////////add//////////////////////////////////////////////////////
     /*public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $participant = new Participant();
@@ -62,7 +67,7 @@ final class ParticipantController extends AbstractController{
     }*/
 
 ////////////////////////////////////
-#[Route('/participant/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
+/*#[Route('/participant/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
 public function add(ManagerRegistry $doctrine, Request $request): Response
 {
     $em = $doctrine->getManager();
@@ -87,10 +92,36 @@ public function add(ManagerRegistry $doctrine, Request $request): Response
         'form' => $form,
         'participant' => $participant, // Assurez-vous de transmettre 'plannings'
     ]);
+}*/
+
+
+#[Route('/new/{id}', name: 'participant_new')]
+public function new(Request $request, EvenementRepository $evenementRepository, EntityManagerInterface $entityManager, int $id): Response
+{
+    $evenement = $evenementRepository->find($id);
+    if (!$evenement) {
+        throw $this->createNotFoundException('Événement non trouvé.');
+    }
+
+    $participant = new Participant();
+    $participant->setEnv($evenement); // Associe l'événement au participant
+
+    $form = $this->createForm(ParticipantType::class, $participant);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+       // return $this->redirectToRoute('evenement_index'); // Redirection après enregistrement
+    }
+
+    return $this->render('participant/new.html.twig', [
+        'form' => $form->createView(),
+    ]);
 }
-
-/////////////////////////////////////////////  
-
+  
+////////////////////////////////////////////////show/delete/update//////////////////////////////////////////////
     #[Route('/{id}', name: 'app_participant_show', methods: ['GET'])]
     public function show(Participant $participant): Response
     {

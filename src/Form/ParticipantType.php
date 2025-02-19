@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Form;
+namespace App\Form ;
+use App\Entity\Evenement;
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ParticipantType extends AbstractType
 {
@@ -15,6 +18,11 @@ class ParticipantType extends AbstractType
             ->add('age')
             ->add('telephone')
             ->add('email')
+            ->add('env', EntityType::class, [
+                'class' => Evenement::class,
+                'choice_label' => 'titre',
+                'attr' => ['hidden' => true], // Optionnel pour masquer dans le formulaire
+            ])
             ;
         
     }
