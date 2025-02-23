@@ -78,4 +78,5 @@ final class CategorieController extends AbstractController
 
         return $this->redirectToRoute('app_produitcon_index', [], Response::HTTP_SEE_OTHER);
     }
-}
+
+}    

@@ -1,9 +1,9 @@
 {% extends 'back.html.twig' %}
 
-{% block title %}Commande index{% endblock %}
+{% block title %}Gestion des Produits{% endblock %}
 
 {% block body %}
-<body class="navbar-fixed sidebar-fixed" id="body">
+ <body class="navbar-fixed sidebar-fixed" id="body">
     <script>
       NProgress.configure({ showSpinner: false });
       NProgress.start();
@@ -40,9 +40,7 @@
                     Dashboards
                   </li>
 
-                  <li
-                   class="active"
-                   >
+                  <li >
                     <a class="sidenav-item-link" href="/back/order">
                       <i class="mdi mdi-package-variant-closed"></i>
                       <span class="nav-text">Order Dashboard</span>
@@ -56,7 +54,7 @@
                     </a>
                   </li>
 
-                  <li>
+                  <li  class="active">
                     <a class="sidenav-item-link" href="/back/products">
                       <i class="mdi mdi-shopping-outline"></i>
                       <span class="nav-text">Products Dashboard</span>
@@ -86,15 +84,9 @@
 
 
 
-
-
                   <li class="section-title">
                     Apps
                   </li>
-
-
-
-
 
                   <li
                    >
@@ -115,11 +107,6 @@
                       <span class="nav-text">Contacts</span>
                     </a>
                   </li>
-
-
-
-
-
                   <li
                    >
                     <a class="sidenav-item-link" href="team.html">
@@ -1278,177 +1265,166 @@
                 </ul>
               </div>
             </nav>
-
-
           </header>
 
-        <!-- ====================================
-        ——— CONTENT WRAPPER
-        ===================================== -->
-        <div class="content-wrapper">
-          <div class="content">
-                <!-- Table Product -->
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card card-default">
-                      <div class="card-header">
-                        <h2>Liste des Produits</h2>
-                        <div class="dropdown">
-                          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> Yearly Chart
-                          </a>
 
-                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <table id="productsTable" class="table table-hover table-product" style="width:100%">
-                          {% include "produitcon/index.html.twig" %}
-                        </table>
-                        <a href="#" class="btn btn-primary btn-pill" data-toggle="modal" data-target="#produit-modal">Add Produit</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Table Product -->
-                <div class="row">
-                  <div class="col-12">
-                    <div class="card card-default">
-                      <div class="card-header">
-                        <h2>Liste des Livraisons</h2>
-                        <div class="dropdown">
-                          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> Yearly Chart
-                          </a>
+     <!-- ====================================
+     ——— CONTENT WRAPPER
+     ===================================== -->
+<div class="content-wrapper">
+  <div class="content">
+    <!-- Table Product -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-default">
+          <div class="card-header">
+            <h2>Liste des Produits</h2>
+          </div>
+          <div class="card-body">
+            <table id="productsTable" class="table table-hover table-product" style="width:100%">
+              {% include "produitcon/backindex.html.twig" %}
+            </table>
+            <a href="#" class="btn btn-primary btn-pill" data-toggle="modal" data-target="#produit-modal">Add Produit</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <table id="productsTable" class="table table-hover table-product" style="width:100%">
-                          {% include "categorie/index.html.twig" %}
-                        </table>
-                      <a href="#" class="btn btn-primary btn-pill" data-toggle="modal" data-target="#catégorie-modal">Add Catégorie</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </div>
+    <!-- Table Catégories -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-default">
+          <div class="card-header">
+            <h2>Liste des Catégories</h2>
+          </div>
+          <div class="card-body">
+            <table id="categoriesTable" class="table table-hover table-product" style="width:100%">
+              {% include "categorie/backindex.html.twig" %}
+            </table>
+            <a href="#" class="btn btn-primary btn-pill" data-toggle="modal" data-target="#categorie-modal">Add Catégorie</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Produit Modal -->
 <div class="modal fade" id="produit-modal" aria-labelledby="produit-modal" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered d-flex justify-content-center" style="max-width: 80vw;">
-        <form method="post" action="{{ path('app_produitcon_new') }}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Ajouter un Produit</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(produitForm) }}
+  <div class="modal-dialog modal-xl modal-dialog-centered d-flex justify-content-center" style="max-width: 80vw;">
+    <form method="post" action="{{ path('back_products') }}" enctype="multipart/form-data">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Ajouter un Produit</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ form_start(produitForm, {'attr': {'novalidate': 'novalidate'}}) }}
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form_label(produitForm.nom, "Nom du Produit") }}
-                                {{ form_widget(produitForm.nom, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(produitForm.nom) }}
-                            </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                {{ form_label(produitForm.nom, "Nom du Produit") }}
+                {{ form_widget(produitForm.nom, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(produitForm.nom) }}
+              </div>
 
-                            <div class="form-group">
-                                {{ form_label(produitForm.description, "Description") }}
-                                {{ form_widget(produitForm.description, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(produitForm.description) }}
-                            </div>
+              <div class="form-group">
+                {{ form_label(produitForm.description, "Description") }}
+                {{ form_widget(produitForm.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(produitForm.description) }}
+              </div>
 
-                            <div class="form-group">
-                                {{ form_label(produitForm.type, "Type de Produit") }}
-                                {{ form_widget(produitForm.type, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(produitForm.type) }}
-                            </div>
+              <div class="form-group">
+                {{ form_label(produitForm.qualite, "Qualité") }}
+                {{ form_widget(produitForm.qualite, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(produitForm.qualite) }}
+              </div>
 
-                            <div class="form-group">
-                                {{ form_label(produitForm.qualite, "Qualité") }}
-                                {{ form_widget(produitForm.qualite, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(produitForm.qualite) }}
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                {{ form_label(produitForm.quantite_disponible, "Quantité Disponible") }}
-                                {{ form_widget(produitForm.quantite_disponible, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(produitForm.quantite_disponible) }}
-                            </div>
-
-                            <div class="form-group">
-                                {{ form_label(produitForm.prix, "Prix") }}
-                                {{ form_widget(produitForm.prix, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(produitForm.prix) }}
-                            </div>
-
-                            <div class="form-group">
-                                {{ form_label(produitForm.date_ajout, "Date d'Ajout") }}
-                                {{ form_widget(produitForm.date_ajout, {'attr': {'class': 'form-control'}}) }}
-                                {{ form_errors(produitForm.date_ajout) }}
-                            </div>
-                        </div>
-                    </div>
-
-                    {{ form_end(produitForm) }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                </div>
+              <div class="form-group">
+                {{ form_label(produitForm.quantite_disponible, "Quantité Disponible") }}
+                {{ form_widget(produitForm.quantite_disponible, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(produitForm.quantite_disponible) }}
+              </div>
             </div>
-        </form>
-    </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                {{ form_label(produitForm.prix, "Prix") }}
+                {{ form_widget(produitForm.prix, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(produitForm.prix) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(produitForm.date_ajout, "Date d'Ajout") }}
+                {{ form_widget(produitForm.date_ajout, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(produitForm.date_ajout) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(produitForm.categorie, "Catégorie") }}
+                {{ form_widget(produitForm.categorie, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(produitForm.categorie) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(produitForm.image, "Image du Produit") }}
+                {{ form_widget(produitForm.image, {'attr': {'class': 'form-control-file'}}) }}
+                {{ form_errors(produitForm.image) }}
+              </div>
+            </div>
+          </div>
+
+          {{ form_end(produitForm) }}
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
+
+<!-- Catégorie Modal -->
 <div class="modal fade" id="categorie-modal" aria-labelledby="categorie-modal" aria-hidden="true">
-    <div class="modal-dialog modal-md modal-dialog-centered">
-        <form method="post" action="{{ path('app_categorie_new') }}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title">Ajouter une Catégorie</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ form_start(categorieForm) }}
+  <div class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center" style="max-width: 50vw;">
+    <form method="post" action="{{ path('back_products') }}" enctype="multipart/form-data">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Ajouter une Catégorie</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ form_start(categorieForm, {'attr': {'novalidate': 'novalidate'}}) }}
 
-                    <div class="form-group">
-                        {{ form_label(categorieForm.nom, "Nom de la Catégorie") }}
-                        {{ form_widget(categorieForm.nom, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(categorieForm.nom) }}
-                    </div>
+          <div class="form-group">
+            {{ form_label(categorieForm.nom, "Nom de la Catégorie") }}
+            {{ form_widget(categorieForm.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(categorieForm.nom) }}
+          </div>
 
-                    <div class="form-group">
-                        {{ form_label(categorieForm.description, "Description") }}
-                        {{ form_widget(categorieForm.description, {'attr': {'class': 'form-control'}}) }}
-                        {{ form_errors(categorieForm.description) }}
-                    </div>
+          <div class="form-group">
+            {{ form_label(categorieForm.description, "Description") }}
+            {{ form_widget(categorieForm.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(categorieForm.description) }}
+          </div>
 
-                    {{ form_end(categorieForm) }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                </div>
-            </div>
-        </form>
-    </div>
+          {{ form_end(categorieForm) }}
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
           <!-- Footer -->
@@ -1571,5 +1547,5 @@
 
                       </div>
                     </div>
-  </body>
+    </body>
 {% endblock %}

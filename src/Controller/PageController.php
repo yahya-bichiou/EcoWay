@@ -111,47 +111,155 @@ final class PageController extends AbstractController
         ]);
     }
 
-    //Change controller
-    
-    #[Route('/back/products', name: 'back_products', methods:['GET'])]
-    public function indexp1(
+    //gestion produit back  /////////////////////////////////////////////////////////////////
+// Route pour les produits
+/*#[Route('/back/products', name: 'back_products')]
+public function indexp(
+    ProduitRepository $produitRepository,
+    Request $request,
+    EntityManagerInterface $entityManager
+): Response {
+    // Handling Produit Form
+    $produit = new Produit();
+    $produitForm = $this->createForm(Produit1Type::class, $produit);
+    $produitForm->handleRequest($request);
+
+    if ($produitForm->isSubmitted() && $produitForm->isValid()) {
+        // Gestion de l'upload d'image
+        $imageFile = $produitForm->get('image')->getData();
+        if ($imageFile) {
+            $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+            $imageFile->move($this->getParameter('uploads_directory'), $newFilename);
+            $produit->setImage($newFilename);
+        }
+
+        // Sauvegarde en base de données
+        $entityManager->persist($produit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('backend/products.html.twig', [
+        'produits' => $produitRepository->findAll(),
+        'produitForm' => $produitForm->createView(),
+    ]);
+}
+
+
+#[Route('/back/categorie', name: 'back_categorie')]
+public function indexc(
+    CategorieRepository $categorieRepository,
+    Request $request,
+    EntityManagerInterface $entityManager
+): Response {
+    // Handling Categorie Form
+    $categorie = new Categorie();
+    $categorieForm = $this->createForm(CategorieType::class, $categorie);
+    $categorieForm->handleRequest($request);
+
+    if ($categorieForm->isSubmitted() && $categorieForm->isValid()) {
+        $entityManager->persist($categorie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('back_categorie', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // Pass 'categories' to the view
+    return $this->render('backend/products.html.twig', [
+        'categories' => $categorieRepository->findAll(), 
+        'categorieForm' => $categorieForm->createView(),
+    ]);
+}
+
+*/
+  /* #[Route('/back/products', name: 'back_products', methods: ['GET', 'POST'])]
+    public function backIndex(
         ProduitRepository $produitRepository,
         CategorieRepository $categorieRepository,
         Request $request,
         EntityManagerInterface $entityManager
-    ): Response {
-        // Gestion du formulaire Produit
-        $produit = new Produit();
-        $produitForm = $this->createForm(Produit1Type::class, $produit);
-        $produitForm->handleRequest($request);
-    
-        if ($produitForm->isSubmitted() && $produitForm->isValid()) {
-            $entityManager->persist($produit);
-            $entityManager->flush();
-            return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
-        }
-    
-        // Gestion du formulaire Catégorie
-        $categorie = new Categorie();
-        $categorieForm = $this->createForm(CategorieType::class, $categorie);
-        $categorieForm->handleRequest($request);
-    
-        if ($categorieForm->isSubmitted() && $categorieForm->isValid()) {
-            $entityManager->persist($categorie);
-            $entityManager->flush();
-            return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
-        }
-    
-        return $this->render('backend/products.html.twig', [
-            'controller_name' => 'PageController',
+    ): Response {return $this->render('backend/products.html.twig', [
             'produits' => $produitRepository->findAll(),
-            'categories' => $categorieRepository->findAll(),
-            'produitForm' => $produitForm->createView(),
-            'categorieForm' => $categorieForm->createView(),
+            'categories' => $categorieRepository->findAll(), 
         ]);
     }
-    
-    
+
+    #[Route('/backp/new', name: 'back_products_new', methods: ['GET', 'POST'])]
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $produit = new Produit();
+    $form = $this->createForm(Produit1Type::class, $produit);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Gestion de l'upload d'image
+        $imageFile = $form->get('image')->getData();
+        if ($imageFile) {
+            $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+            $imageFile->move($this->getParameter('uploads_directory'), $newFilename);
+            $produit->setImage($newFilename);
+        }
+
+        // Sauvegarde en base de données
+        $entityManager->persist($produit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('backend/products.html.twig', [
+        'produit' => $produit,
+        'form' => $form->createView(), 
+    ]);
+}
+*/
+#[Route('/back/products', name: 'back_products')]
+public function indexp(
+    ProduitRepository $produitRepository,
+    CategorieRepository $categorieRepository,
+    Request $request,
+    EntityManagerInterface $entityManager
+): Response {
+    $produit = new Produit();
+    $produitForm = $this->createForm(Produit1Type::class, $produit);
+    $produitForm->handleRequest($request);
+
+    if ($produitForm->isSubmitted() && $produitForm->isValid()) {
+        // Gestion de l'upload d'image
+        $imageFile = $produitForm->get('image')->getData();
+        if ($imageFile) {
+            $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+            $imageFile->move($this->getParameter('uploads_directory'), $newFilename);
+            $produit->setImage($newFilename);
+        }
+
+        // Sauvegarde en base de données
+        $entityManager->persist($produit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // Handling Categorie Form
+    $categorie = new Categorie();
+    $categorieForm = $this->createForm(CategorieType::class, $categorie);
+    $categorieForm->handleRequest($request);
+
+    if ($categorieForm->isSubmitted() && $categorieForm->isValid()) {
+        $entityManager->persist($categorie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('back_products', [], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->render('backend/products.html.twig', [
+        'produits' => $produitRepository->findAll(),
+        'categories' => $categorieRepository->findAll(),
+        'produitForm' => $produitForm->createView(),
+        'categorieForm' => $categorieForm->createView(),
+    ]);
+}
 
     //Change controller
     #[Route('/back/user', name: 'back_user')]
@@ -205,16 +313,24 @@ final class PageController extends AbstractController
     }
 
     //Change controller
-    #[Route('/front/products', name: 'front_products')]
-    public function indexpf(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
-    {
-
+    #[Route('/front/products', name: 'front_products', methods: ['GET'])]
+    public function frontIndex(
+        ProduitRepository $produitRepository,
+        CategorieRepository $categorieRepository
+    ): Response {
         return $this->render('frontend/products.html.twig', [
-            'controller_name' => 'PageController',
             'produits' => $produitRepository->findAll(),
             'categories' => $categorieRepository->findAll(),
         ]);
     }
+    #[Route('/front/showproduit', name: 'app_produitcon_show', methods: ['GET'])]
+    public function show(Produit $produit): Response
+    {
+        return $this->render('produitcon/frontshow.html.twig', [
+            'produit' => $produit,
+        ]);
+    }
+
 
     //Change controller
     #[Route('/front/user', name: 'back_user')]

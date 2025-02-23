@@ -2,14 +2,17 @@
 namespace App\Form;
 
 use App\Entity\Produit;
+use App\Entity\Categorie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Validator\Constraints\File;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Validator\Constraints as Assert;
+
 class Produit1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -17,27 +20,33 @@ class Produit1Type extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
-            ->add('type')
             ->add('qualite', ChoiceType::class, [
                 'choices' => [
                     'Standard' => 'Standard',
                     'Premium' => 'Premium',
                     'Bio' => 'Bio',
                 ],
-                'placeholder' => 'Sélectionner une qualité', // Valeur par défaut incitant à faire un choix
-                'attr' => ['class' => 'form-select'], // Pour ajouter une classe CSS personnalisée si nécessaire
+                'placeholder' => 'Sélectionner une qualité', 
+                'attr' => ['class' => 'form-select'],
             ])
             ->add('quantite_disponible')
             ->add('prix')
-            ->add('date_ajout', null, [
-                'widget' => 'single_text',
+            // Utilisation correcte de DateTimeType avec option 'widget'
+            ->add('date_ajout', DateTimeType::class, [
+                'widget' => 'single_text',  // Affichage sous forme de champ texte unique
+                'html5' => true,            // Autorise le format de date natif HTML5
+                'attr' => ['class' => 'form-control'],  // Classe CSS pour personnaliser
             ])
             ->add('image', FileType::class, [
                 'label' => 'Image du produit',
-                'required' => false, // Si l'image est optionnelle
+                'required' => false,
             ])
-;
-            
+            ->add('categorie', EntityType::class, [
+                'class' => Categorie::class,
+                'choice_label' => 'nom',
+                'placeholder' => 'Sélectionner une catégorie',
+                'attr' => ['class' => 'form-select'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

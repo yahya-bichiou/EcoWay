@@ -1,45 +1,43 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Catégorie {% endblock %}
+
 
 {% block body %}
-  
-
-    
-
-    <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Search categories..." id="searchInput">
+<div class="container mt-5">
+   <div class="section-heading wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+                    <h2>LISTE DES CATÉGORIES</h2>
+                </div>
+    <div class="row">
+        {% for categorie in categories %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg p-4 border border-primary rounded">
+                    <h5 class="card-title text-center">{{ categorie.nom }}</h5>
+                    <button class="btn btn-info show-details" data-id="{{ categorie.id }}">
+                        <i class="fas fa-info-circle"></i> Voir les détails
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
-    <table class="table table-striped table-hover table-bordered">
-        <thead>
-            <tr>
-                
-                <th>Nom</th>
-               
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for categorie in categories %}
-            <tr>
-               
-                <td>{{ categorie.nom }}</td>
-             
-                <td>
- <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}" class="btn btn-secondary btn-sm custom-brown">Montrer</a>
-<a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}" class="btn btn-secondary btn-sm custom-brown">Modifier</a>
+   
 
-                </td>
-            </tr>
-        {% else %}
-           <tr>
-    <td colspan="4" class="text-center">Aucune catégorie disponible. Veuillez ajouter de nouvelles catégories.</td>
-</tr>
+    <div id="details-container" class="mt-4"></div>
+</div>
 
-        {% endfor %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".show-details").forEach(button => {
+            button.addEventListener("click", function() {
+                let categorieId = this.getAttribute("data-id");
 
-        </tbody>
-    </table>
-
+                fetch(`/categorie/${categorieId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById("details-container").innerHTML = html;
+                    })
+                    .catch(error => console.error("Erreur:", error));
+            });
+        });
+    });
+</script>
 {% endblock %}

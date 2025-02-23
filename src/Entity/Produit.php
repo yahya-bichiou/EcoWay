@@ -33,10 +33,6 @@ class Produit
     )]
     private ?string $description = null;
 
-    #[ORM\Column(length: 40)]
-    #[Assert\NotBlank(message: "Le type du produit est obligatoire.")]
-    private ?string $type = null;
-
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank(message: "La qualité du produit est requise.")]
     #[Assert\Choice(
@@ -48,7 +44,7 @@ class Produit
     #[ORM\Column]
     #[Assert\NotNull(message: "La quantité disponible est obligatoire.")]
     #[Assert\PositiveOrZero(message: "La quantité ne peut pas être négative.")]
-    private ?int $quantite_disponible = null;
+    private ?int $quantiteDisponible = null;
 
     #[ORM\Column]
     #[Assert\NotNull(message: "Le prix est obligatoire.")]
@@ -58,11 +54,11 @@ class Produit
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotNull(message: "La date d'ajout est requise.")]
     #[Assert\Type(\DateTimeInterface::class, message: "La date doit être valide.")]
-    private ?\DateTimeInterface $date_ajout = null;
+    private ?\DateTimeInterface $dateAjout = null;
 
     #[ORM\ManyToOne(targetEntity: Categorie::class)]
     #[ORM\JoinColumn(name: "catégorie_id", referencedColumnName: "id")]
-    private ?Categorie $catégorie = null;
+    private ?Categorie $categorie = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\File(
@@ -71,8 +67,6 @@ class Produit
         mimeTypesMessage: "Veuillez uploader une image JPG ou PNG valide."
     )]
     private ?string $image = null;
-   
-    
 
     // Getters et Setters
     public function getId(): ?int
@@ -102,17 +96,6 @@ class Produit
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
-        return $this;
-    }
-
     public function getQualite(): ?string
     {
         return $this->qualite;
@@ -126,12 +109,12 @@ class Produit
 
     public function getQuantiteDisponible(): ?int
     {
-        return $this->quantite_disponible;
+        return $this->quantiteDisponible;
     }
 
-    public function setQuantiteDisponible(int $quantite_disponible): static
+    public function setQuantiteDisponible(int $quantiteDisponible): static
     {
-        $this->quantite_disponible = $quantite_disponible;
+        $this->quantiteDisponible = $quantiteDisponible;
         return $this;
     }
 
@@ -148,35 +131,34 @@ class Produit
 
     public function getDateAjout(): ?\DateTimeInterface
     {
-        return $this->date_ajout;
+        return $this->dateAjout;
     }
 
-    public function setDateAjout(?\DateTimeInterface $date_ajout): static
+    public function setDateAjout(?\DateTimeInterface $dateAjout): static
     {
-        $this->date_ajout = $date_ajout;
+        $this->dateAjout = $dateAjout;
         return $this;
     }
-  
-    public function getCatégorie(): ?Categorie
+
+    public function getCategorie(): ?Categorie
     {
-        return $this->catégorie;  // Correction ici
+        return $this->categorie;
     }
-    
-    public function setCatégorie(?Categorie $catégorie): static
+
+    public function setCategorie(?Categorie $categorie): static
     {
-        $this->catégorie = $catégorie;  // Correction ici
-    
+        $this->categorie = $categorie;
         return $this;
     }
+
     public function getImage(): ?string
     {
         return $this->image;
     }
-    
+
     public function setImage(?string $image): static
     {
         $this->image = $image;
         return $this;
     }
-
 }
