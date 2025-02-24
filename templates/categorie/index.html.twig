@@ -1,0 +1,43 @@
+
+
+
+{% block body %}
+<div class="container mt-5">
+   <div class="section-heading wow bounceIn" data-wow-duration="1s" data-wow-delay="0.2s">
+                    <h2>LISTE DES CATÉGORIES</h2>
+                </div>
+    <div class="row">
+        {% for categorie in categories %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg p-4 border border-primary rounded">
+                    <h5 class="card-title text-center">{{ categorie.nom }}</h5>
+                    <button class="btn btn-info show-details" data-id="{{ categorie.id }}">
+                        <i class="fas fa-info-circle"></i> Voir les détails
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+   
+
+    <div id="details-container" class="mt-4"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".show-details").forEach(button => {
+            button.addEventListener("click", function() {
+                let categorieId = this.getAttribute("data-id");
+
+                fetch(`/categorie/${categorieId}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById("details-container").innerHTML = html;
+                    })
+                    .catch(error => console.error("Erreur:", error));
+            });
+        });
+    });
+</script>
+{% endblock %}

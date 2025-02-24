@@ -1,0 +1,283 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Gestion des Produits{% endblock %}
+
+{% block body %}
+ <body >
+           
+     <!-- ====================================
+     ——— CONTENT WRAPPER
+     ===================================== -->
+<div class="row">
+ <div class="col-12"> 
+     <div class="card card-default">
+       <div class="card-header">
+         <h2>Liste des Produits</h2>
+       </div>
+       <div class="card-body">
+         <table id="productsTable" class="table table-hover table-product" style="width:100%">
+           {% include "produitcon/backindex.html.twig" %}
+         </table>
+         <a href="#" class="btn btn-primary btn-pill" data-toggle="modal" data-target="#produit-modal">Add Produit</a>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!-- Table Catégories -->
+ <div class="row">
+  <div class="col-12">
+     <div class="card card-default">
+       <div class="card-header">
+         <h2>Liste des Catégories</h2>
+       </div>
+       <div class="card-body">
+         <table id="categoriesTable" class="table table-hover table-product" style="width:100%">
+           {% include "categorie/backindex.html.twig" %}
+         </table>
+         <a href="#" class="btn btn-primary btn-pill" data-toggle="modal" data-target="#categorie-modal">Add Catégorie</a>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+<!-- Produit Modal -->
+<div class="modal fade" id="produit-modal" aria-labelledby="produit-modal" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered d-flex justify-content-center" style="max-width: 80vw;">
+    <form method="post" action="{{ path('back_products') }}" enctype="multipart/form-data">
+      <input type="hidden" name="form_type" value="produit">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Ajouter un Produit</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                {{ form_label(form.nom, "Nom du Produit") }}
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nom) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(form.description, "Description") }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(form.qualite, "Qualité") }}
+                {{ form_widget(form.qualite, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.qualite) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(form.quantiteDisponible, "Quantité Disponible") }}
+                {{ form_widget(form.quantiteDisponible, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.quantiteDisponible) }}
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                {{ form_label(form.prix, "Prix") }}
+                {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prix) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(form.dateAjout, "Date d'Ajout") }}
+                {{ form_widget(form.dateAjout, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.dateAjout) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(form.categorie, "Catégorie") }}
+                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.categorie) }}
+              </div>
+
+              <div class="form-group">
+                {{ form_label(form.image, "Image du Produit") }}
+                {{ form_widget(form.image, {'attr': {'class': 'form-control-file'}}) }}
+                {{ form_errors(form.image) }}
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          {{ form_end(form) }}
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Catégorie Modal -->
+<div class="modal fade" id="categorie-modal" aria-labelledby="categorie-modal" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered d-flex justify-content-center" style="max-width: 50vw;">
+    <form method="post" action="{{ path('back_products') }}" enctype="multipart/form-data">
+      <input type="hidden" name="form_type" value="categorie">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Ajouter une Catégorie</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ form_start(categorieForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+          <div class="form-group">
+            {{ form_label(categorieForm.nom, "Nom de la Catégorie") }}
+            {{ form_widget(categorieForm.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(categorieForm.nom) }}
+          </div>
+
+          <div class="form-group">
+            {{ form_label(categorieForm.description, "Description") }}
+            {{ form_widget(categorieForm.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(categorieForm.description) }}
+          </div>
+
+          {{ form_end(categorieForm) }}
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+          <!-- Footer -->
+          <footer class="footer mt-auto">
+            <div class="copyright bg-white">
+              <p>
+                &copy; <span id="copy-year"></span> Copyright ECOWAY
+              </p>
+            </div>
+            <script>
+                var d = new Date();
+                var year = d.getFullYear();
+                document.getElementById("copy-year").innerHTML = year;
+            </script>
+          </footer>
+
+      </div>
+    </div>
+
+                    <!-- Card Offcanvas -->
+                    <div class="card card-offcanvas" id="contact-off" >
+                      <div class="card-header">
+                        <h2>Contacts</h2>
+                        <a href="#" class="btn btn-primary btn-pill px-4">Add New</a>
+                      </div>
+                      <div class="card-body">
+
+                        <div class="mb-4">
+                          <input type="text" class="form-control form-control-lg form-control-secondary rounded-0" placeholder="Search contacts...">
+                        </div>
+
+                        <div class="media media-sm">
+                          <div class="media-sm-wrapper">
+                            <a href="user-profile.html">
+                              <img src="{{asset('backend/images/user/user-sm-01.jpg')}}" alt="User Image">
+                              <span class="active bg-primary"></span>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <a href="user-profile.html">
+                              <span class="title">Selena Wagner</span>
+                              <span class="discribe">Designer</span>
+                            </a>
+                          </div>
+                        </div>
+
+                        <div class="media media-sm">
+                          <div class="media-sm-wrapper">
+                            <a href="user-profile.html">
+                              <img src="{{asset('backend/images/user/user-sm-02.jpg')}}" alt="User Image">
+                              <span class="active bg-primary"></span>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <a href="user-profile.html">
+                              <span class="title">Walter Reuter</span>
+                              <span>Developer</span>
+                            </a>
+                          </div>
+                        </div>
+
+                        <div class="media media-sm">
+                          <div class="media-sm-wrapper">
+                            <a href="user-profile.html">
+                              <img src="{{asset('backend/images/user/user-sm-03.jpg')}}" alt="User Image">
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <a href="user-profile.html">
+                              <span class="title">Larissa Gebhardt</span>
+                              <span>Cyber Punk</span>
+                            </a>
+                          </div>
+                        </div>
+
+                        <div class="media media-sm">
+                          <div class="media-sm-wrapper">
+                            <a href="user-profile.html">
+                              <img src="{{asset('backend/images/user/user-sm-04.jpg')}}" alt="User Image">
+                            </a>
+
+                          </div>
+                          <div class="media-body">
+                            <a href="user-profile.html">
+                              <span class="title">Albrecht Straub</span>
+                              <span>Photographer</span>
+                            </a>
+                          </div>
+                        </div>
+
+                        <div class="media media-sm">
+                          <div class="media-sm-wrapper">
+                            <a href="user-profile.html">
+                              <img src="{{asset('backend/images/user/user-sm-05.jpg')}}" alt="User Image">
+                              <span class="active bg-danger"></span>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <a href="user-profile.html">
+                              <span class="title">Leopold Ebert</span>
+                              <span>Fashion Designer</span>
+                            </a>
+                          </div>
+                        </div>
+
+                        <div class="media media-sm">
+                          <div class="media-sm-wrapper">
+                            <a href="user-profile.html">
+                              <img src="{{asset('backend/images/user/user-sm-06.jpg')}}" alt="User Image">
+                              <span class="active bg-primary"></span>
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <a href="user-profile.html">
+                              <span class="title">Selena Wagner</span>
+                              <span>Photographer</span>
+                            </a>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+    </body>
+{% endblock %}
